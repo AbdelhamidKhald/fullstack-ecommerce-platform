@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
 import { ToastProvider } from './context/ToastContext';
+import { ErrorBoundary } from './components/ui/ErrorBoundary';
 import { Layout } from './components/layout/Layout';
 import { AuthGuard, AdminGuard } from './components/layout/AuthGuard';
 import { ToastContainer } from './components/ui/ToastContainer';
@@ -37,7 +38,8 @@ function App() {
         <CartProvider>
           <ToastProvider>
             <ToastContainer />
-            <Suspense fallback={<PageSpinner />}>
+            <ErrorBoundary>
+              <Suspense fallback={<PageSpinner />}>
               <Routes>
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/register" element={<RegisterPage />} />
@@ -65,7 +67,8 @@ function App() {
 
                 <Route path="*" element={<Layout><NotFoundPage /></Layout>} />
               </Routes>
-            </Suspense>
+              </Suspense>
+            </ErrorBoundary>
           </ToastProvider>
         </CartProvider>
       </AuthProvider>

@@ -39,9 +39,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   useEffect(() => {
+    let cancelled = false;
+
     supabase.auth.getSession().then(async ({ data: { session: s } }) => {
+      if (cancelled) return;
       if (s?.user) {
         const valid = await fetchProfile(s.user.id);
+        if (cancelled) return;
         if (!valid) {
           await supabase.auth.signOut();
           setSession(null);
@@ -56,18 +60,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     });
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, s) => {
+      if (cancelled) return;
       setSession(s);
       setUser(s?.user ?? null);
       if (s?.user) {
-        (async () => {
-          await fetchProfile(s.user.id);
-        })();
+        fetchProfile(s.user.id);
       } else {
         setProfile(null);
       }
     });
 
-    return () => subscription.unsubscribe();
+    return () => {
+      cancelled = true;
+      subscription.unsubscribe();
+    };
   }, []);
 
   const signUp = async (email: string, password: string, fullName: string) => {
