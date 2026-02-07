@@ -119,50 +119,67 @@ The platform demonstrates advanced frontend patterns including lazy-loaded route
 
 - **Node.js** ≥ 18.0.0
 - **npm** ≥ 9.0.0
-- A free **[Supabase](https://supabase.com/)** account
+- **Docker Desktop** — required for local Supabase ([download](https://www.docker.com/products/docker-desktop))
 
-### 1. Clone the Repository
+### Option A — Quick Start (Windows)
+
+```batch
+setup.bat        REM One-time: installs deps, starts Docker, boots local Supabase, creates .env
+run.bat          REM Daily: starts Supabase + Vite dev server
+```
+
+### Option B — Manual Setup
+
+#### 1. Clone the Repository
 
 ```bash
 git clone https://github.com/AbdelhamidKhald/fullstack-ecommerce-platform.git
 cd fullstack-ecommerce-platform
 ```
 
-### 2. Install Dependencies
+#### 2. Install Dependencies
 
 ```bash
 npm install
 ```
 
-### 3. Set Up Supabase
+#### 3. Start Local Supabase
 
-1. Create a new project at [supabase.com](https://supabase.com/)
-2. Go to **SQL Editor** and run the migration files in order:
+```bash
+npx supabase start     # Pulls Docker images and starts all services
+```
 
-   ```
-   supabase/migrations/20260206193406_create_profiles_table.sql
-   supabase/migrations/20260206193543_create_categories_table.sql
-   supabase/migrations/20260206193804_create_products_table.sql
-   supabase/migrations/20260206193831_create_cart_orders_reviews_wishlists.sql
-   supabase/migrations/20260206193922_seed_products.sql
-   ```
+All 6 migrations are applied automatically:
 
-3. Go to **Settings → API** and copy your Project URL and anon key.
+| # | Migration | Description |
+|---|---|---|
+| 1 | `20260206193406_create_profiles_table.sql` | User profiles with auto-creation trigger |
+| 2 | `20260206193543_create_categories_table.sql` | Product categories with RLS |
+| 3 | `20260206193804_create_products_table.sql` | Products with rating aggregation trigger |
+| 4 | `20260206193831_create_cart_orders_reviews_wishlists.sql` | Cart, orders, reviews, wishlists with RLS |
+| 5 | `20260206193922_seed_products.sql` | Sample products and categories |
+| 6 | `20260207210000_fix_rls_recursion.sql` | `is_admin()` SECURITY DEFINER function |
 
-### 4. Configure Environment Variables
+#### 4. Configure Environment Variables
 
 ```bash
 cp .env.example .env
 ```
 
-Edit `.env` with your Supabase credentials:
+Get your local credentials and paste them into `.env`:
 
-```env
-VITE_SUPABASE_URL=https://your-project-id.supabase.co
-VITE_SUPABASE_ANON_KEY=your-anon-key-here
+```bash
+npx supabase status    # Shows API URL and anon key
 ```
 
-### 5. Start the Development Server
+```env
+VITE_SUPABASE_URL=http://127.0.0.1:54321
+VITE_SUPABASE_ANON_KEY=<anon-key-from-status>
+```
+
+> **Cloud Supabase**: You can also use a hosted Supabase project — create one at [supabase.com](https://supabase.com/), run the migration files in the SQL Editor, and use the cloud URL/key instead.
+
+#### 5. Start the Development Server
 
 ```bash
 npm run dev
@@ -170,11 +187,12 @@ npm run dev
 
 The app will be available at **http://localhost:5173**
 
-### 6. Create an Admin User (Optional)
+#### 6. Create an Admin User (Optional)
 
 1. Register a new account through the app
-2. In Supabase Dashboard → Table Editor → `profiles`, update the user's `role` to `admin`
-3. Refresh the app — the Admin Dashboard will appear in the navigation
+2. Open Supabase Studio at **http://127.0.0.1:54323** → Table Editor → `profiles`
+3. Update the user's `role` to `admin`
+4. Refresh the app — the Admin Dashboard will appear in the navigation
 
 ---
 
@@ -187,6 +205,11 @@ The app will be available at **http://localhost:5173**
 | `npm run preview` | Preview production build locally |
 | `npm run lint` | Run ESLint across all TypeScript files |
 | `npm run typecheck` | Run TypeScript compiler in check mode |
+| `setup.bat` | **(Windows)** One-time full project setup — deps, Docker, Supabase, .env |
+| `run.bat` | **(Windows)** Start Supabase + Vite dev server |
+| `npx supabase start` | Start local Supabase via Docker |
+| `npx supabase stop` | Stop local Supabase containers |
+| `npx supabase db reset` | Reset database and re-run all migrations |
 
 ---
 
@@ -203,7 +226,7 @@ nexshop/
 │   ├── components/
 │   │   ├── layout/            # App shell components
 │   │   │   ├── AuthGuard.tsx   # Route protection (Auth + Admin)
-│   │   │   ├── Footer.tsx      # Site footer with newsletter
+│   │   │   ├── Footer.tsx      # Site footer with contact & project links
 │   │   │   ├── Layout.tsx      # Main layout wrapper
 │   │   │   └── Navbar.tsx      # Responsive navigation bar
 │   │   ├── product/           # Product-specific components
@@ -264,13 +287,16 @@ nexshop/
 │       ├── 02_create_categories_table.sql
 │       ├── 03_create_products_table.sql
 │       ├── 04_create_cart_orders_reviews_wishlists.sql
-│       └── 05_seed_products.sql
+│       ├── 05_seed_products.sql
+│       └── 06_fix_rls_recursion.sql
 ├── .env.example               # Environment variable template
 ├── .gitignore
 ├── CONTRIBUTING.md            # Contribution guidelines
 ├── LICENSE                    # MIT License
 ├── index.html                 # HTML entry with SEO meta tags
 ├── package.json
+├── setup.bat                  # Windows one-time setup script
+├── run.bat                    # Windows dev server launcher
 ├── tailwind.config.js         # Tailwind + custom design tokens
 ├── tsconfig.json
 └── vite.config.ts
@@ -297,7 +323,7 @@ nexshop/
 ├─────────────────────────────────────────────────────────┤
 │  Supabase Client SDK                                    │
 ├─────────────────────────────────────────────────────────┤
-│                    Supabase Cloud                        │
+│                 Supabase (Local or Cloud)                    │
 │  ┌──────────┐  ┌──────────┐  ┌──────────────────────┐  │
 │  │PostgreSQL│  │   Auth   │  │  Row Level Security  │  │
 │  │ Database │  │  (JWT)   │  │     (RLS Policies)   │  │
@@ -507,6 +533,8 @@ This project is licensed under the MIT License — see the [LICENSE](./LICENSE) 
 **Abdelhamid Khaled**
 
 - GitHub: [@AbdelhamidKhald](https://github.com/AbdelhamidKhald)
+- LinkedIn: [Abdelhamid Khald](https://www.linkedin.com/in/abdelhamid-khald-4782462a4/)
+- Email: [abdelhamidkhaldacc@gmail.com](mailto:abdelhamidkhaldacc@gmail.com)
 
 ---
 
