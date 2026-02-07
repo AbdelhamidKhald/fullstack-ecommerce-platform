@@ -286,7 +286,7 @@ export default function AdminDashboard() {
         <div className="xl:col-span-2">
           <div className="bg-white rounded-2xl border border-surface-100 p-6 hover:shadow-md transition-shadow">
             <h2 className="font-semibold text-surface-900 mb-4">Revenue (Last 7 Days)</h2>
-            <div className="h-72">
+            <div className="h-72" style={{ minHeight: 288 }}>
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={revenueData} margin={{ top: 5, right: 10, left: 0, bottom: 0 }}>
                   <defs>
@@ -316,7 +316,7 @@ export default function AdminDashboard() {
               <p className="text-center text-surface-400 text-sm py-12">No orders yet</p>
             ) : (
               <>
-                <div className="h-48 flex justify-center">
+                <div className="h-48 flex justify-center" style={{ minHeight: 192 }}>
                   <ResponsiveContainer width="100%" height="100%">
                     <PieChart>
                       <Pie

@@ -152,7 +152,7 @@ npm install
 npx supabase start     # Pulls Docker images and starts all services
 ```
 
-All 6 migrations are applied automatically:
+All 7 migrations are applied automatically:
 
 | # | Migration | Description |
 |---|---|---|
@@ -162,6 +162,7 @@ All 6 migrations are applied automatically:
 | 4 | `20260206193831_create_cart_orders_reviews_wishlists.sql` | Cart, orders, reviews, wishlists with RLS |
 | 5 | `20260206193922_seed_products.sql` | Sample products and categories |
 | 6 | `20260207210000_fix_rls_recursion.sql` | `is_admin()` SECURITY DEFINER function |
+| 7 | `20260207230000_add_profile_fk_for_joins.sql` | FK links for PostgREST profile joins |
 
 #### 4. Configure Environment Variables
 
@@ -293,7 +294,8 @@ nexshop/
 │       ├── 20260206193804_create_products_table.sql
 │       ├── 20260206193831_create_cart_orders_reviews_wishlists.sql
 │       ├── 20260206193922_seed_products.sql
-│       └── 20260207210000_fix_rls_recursion.sql
+│       ├── 20260207210000_fix_rls_recursion.sql
+│       └── 20260207230000_add_profile_fk_for_joins.sql
 ├── .env.example               # Environment variable template
 ├── .gitignore
 ├── CONTRIBUTING.md            # Contribution guidelines

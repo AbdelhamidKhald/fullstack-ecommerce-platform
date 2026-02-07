@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Check, MapPin, CreditCard, ClipboardList } from 'lucide-react';
 import { useCart } from '../context/CartContext';
@@ -75,8 +75,11 @@ export default function CheckoutPage() {
     navigate(`/order-confirmation/${order.id}`);
   };
 
+  useEffect(() => {
+    if (items.length === 0) navigate('/cart');
+  }, [items.length, navigate]);
+
   if (items.length === 0) {
-    navigate('/cart');
     return null;
   }
 
