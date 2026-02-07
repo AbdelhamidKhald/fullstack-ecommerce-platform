@@ -1,6 +1,7 @@
 import { NavLink, Outlet } from 'react-router-dom';
 import {
   LayoutDashboard, Package, ShoppingCart, Users, FolderTree, ChevronLeft,
+  Activity, Settings,
 } from 'lucide-react';
 import { useState } from 'react';
 import { cn } from '../../lib/utils';
@@ -11,6 +12,8 @@ const navItems = [
   { to: '/admin/orders', label: 'Orders', icon: ShoppingCart, end: false },
   { to: '/admin/categories', label: 'Categories', icon: FolderTree, end: false },
   { to: '/admin/customers', label: 'Customers', icon: Users, end: false },
+  { to: '/admin/activity', label: 'Activity', icon: Activity, end: false },
+  { to: '/admin/settings', label: 'Settings', icon: Settings, end: false },
 ];
 
 export default function AdminLayout() {

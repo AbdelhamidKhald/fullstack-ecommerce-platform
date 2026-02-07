@@ -47,11 +47,13 @@ The platform demonstrates advanced frontend patterns including lazy-loaded route
 
 | Feature | Description |
 |---|---|
-| **Dashboard Overview** | Revenue, orders, products, and customer stats with trend indicators |
-| **Product Management** | Full CRUD — create, edit, delete products with images, pricing, stock, and categories |
-| **Order Management** | View all orders, filter by status, update order status, inspect order details |
-| **Category Management** | Create, edit, delete categories with images and display ordering |
-| **Customer Directory** | Search and browse registered users with role and location info |
+| **Dashboard Overview** | Revenue chart (7-day area chart), orders-by-status pie chart, top selling products, KPI cards with month-over-month trends, recent activity feed, low stock alerts |
+| **Product Management** | Full CRUD with stats bar, category/status filters, bulk select & delete, server-side pagination, image previews, star ratings, search |
+| **Order Management** | Status & payment filters, date range picker, search by ID/customer, order timeline progress bar, inline tracking number edit, CSV export, pagination |
+| **Category Management** | Grid/list toggle view, product count per category, image previews, display order reorder controls, search |
+| **Customer Directory** | Detail modal with order history & total spent, role filter, sort options, CSV export, server-side pagination |
+| **Activity Log** | Unified timeline of orders, registrations, and reviews with type filters, relative timestamps, 24h stats |
+| **Settings** | Store info, notification preferences, display settings (all persisted to localStorage), danger zone with reset |
 
 ### ⚡ Technical Highlights
 
@@ -104,7 +106,7 @@ The platform demonstrates advanced frontend patterns including lazy-loaded route
 
 | Category | Technologies |
 |---|---|
-| **Frontend** | React 18, React Router 7, Lucide React Icons |
+| **Frontend** | React 18, React Router 7, Recharts 2, Lucide React Icons |
 | **Language** | TypeScript 5.5 (strict) |
 | **Styling** | Tailwind CSS 3.4, Custom Design Tokens (brand/surface/accent), CSS Animations |
 | **Backend** | Supabase (PostgreSQL, Auth, Row Level Security, Database Triggers) |
@@ -258,12 +260,14 @@ nexshop/
 │   │   └── utils.ts           # Helper functions
 │   ├── pages/                 # Route page components
 │   │   ├── admin/             # Admin dashboard pages
+│   │   │   ├── AdminActivity.tsx    # Activity / audit log
 │   │   │   ├── AdminCategories.tsx  # Category CRUD
 │   │   │   ├── AdminCustomers.tsx   # Customer directory
-│   │   │   ├── AdminDashboard.tsx   # Stats & overview
+│   │   │   ├── AdminDashboard.tsx   # Stats, charts & overview
 │   │   │   ├── AdminLayout.tsx      # Admin sidebar layout
 │   │   │   ├── AdminOrders.tsx      # Order management
-│   │   │   └── AdminProducts.tsx    # Product CRUD
+│   │   │   ├── AdminProducts.tsx    # Product CRUD
+│   │   │   └── AdminSettings.tsx    # Store settings
 │   │   ├── CartPage.tsx
 │   │   ├── CheckoutPage.tsx
 │   │   ├── HomePage.tsx

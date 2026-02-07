@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Package, Mail, MapPin, Phone, ArrowRight, Github, Linkedin } from 'lucide-react';
+import { Package, Mail, ArrowRight, Github, Linkedin } from 'lucide-react';
 import { APP_NAME } from '../../lib/constants';
 import { useState } from 'react';
 import { useToast } from '../../context/ToastContext';
