@@ -54,6 +54,7 @@ export function Navbar() {
   const navLinks = [
     { to: '/', label: 'Home' },
     { to: '/shop', label: 'Shop' },
+    ...(profile?.role === 'admin' ? [{ to: '/admin', label: 'Admin' }] : []),
   ];
 
   const isTransparent = isHome && !scrolled && !mobileOpen;

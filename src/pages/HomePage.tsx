@@ -3,6 +3,7 @@ import { ArrowRight, Truck, Shield, Headphones, RotateCcw } from 'lucide-react';
 import { useProducts } from '../hooks/useProducts';
 import { useCategories } from '../hooks/useCategories';
 import { useDocumentTitle } from '../hooks/useDocumentTitle';
+import { useAuth } from '../context/AuthContext';
 import { ProductCard } from '../components/product/ProductCard';
 import { ProductGridSkeleton } from '../components/ui/Skeleton';
 import { AnimatedSection } from '../components/ui/AnimatedSection';
@@ -33,6 +34,7 @@ function AnimatedCounter({ target, suffix = '' }: { target: number; suffix?: str
 
 export default function HomePage() {
   useDocumentTitle();
+  const { user } = useAuth();
   const { products: featuredProducts, loading: featuredLoading } = useProducts({ featured: true, limit: 8 });
   const { categories } = useCategories();
 
@@ -203,14 +205,20 @@ export default function HomePage() {
               <div className="absolute bottom-0 left-0 w-64 h-64 bg-emerald-400/20 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
 
               <div className="relative z-10 text-center">
-                <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">Ready to Start Shopping?</h2>
+                <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
+                  {user ? 'Discover Something New' : 'Ready to Start Shopping?'}
+                </h2>
                 <p className="text-white/80 text-lg max-w-xl mx-auto mb-8">
-                  Join thousands of satisfied customers and discover products that enhance your lifestyle.
+                  {user
+                    ? 'Explore our latest collections and find products that match your style.'
+                    : 'Join thousands of satisfied customers and discover products that enhance your lifestyle.'}
                 </p>
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                  <Link to="/register" className="btn-secondary bg-white text-brand-700 hover:bg-white/90 px-8 py-4 text-base shadow-lg">
-                    Create Free Account
-                  </Link>
+                  {!user && (
+                    <Link to="/register" className="btn-secondary bg-white text-brand-700 hover:bg-white/90 px-8 py-4 text-base shadow-lg">
+                      Create Free Account
+                    </Link>
+                  )}
                   <Link to="/shop" className="btn-outline border-white/30 text-white hover:bg-white/10 hover:border-white/50 px-8 py-4 text-base">
                     Browse Products
                   </Link>
