@@ -69,6 +69,7 @@ The platform demonstrates advanced frontend patterns including lazy-loaded route
 | **Custom Hooks** | Reusable hooks for products, categories, reviews, debounce, and scroll animations |
 | **Toast Notifications** | Context-driven toast system with success/error/info variants |
 | **Auth Guards** | Protected routes for authenticated users and admin-only sections |
+| **Admin Navigation** | Admin link auto-appears in navbar for admin-role users; context-aware CTA on homepage |
 
 ---
 
@@ -194,7 +195,7 @@ The app will be available at **http://localhost:5173**
 1. Register a new account through the app
 2. Open Supabase Studio at **http://127.0.0.1:54323** → Table Editor → `profiles`
 3. Update the user's `role` to `admin`
-4. Refresh the app — the Admin Dashboard will appear in the navigation
+4. Refresh the app — an **Admin** link will appear in the top navigation bar
 
 ---
 
@@ -230,7 +231,7 @@ nexshop/
 │   │   │   ├── AuthGuard.tsx   # Route protection (Auth + Admin)
 │   │   │   ├── Footer.tsx      # Site footer with contact & project links
 │   │   │   ├── Layout.tsx      # Main layout wrapper
-│   │   │   └── Navbar.tsx      # Responsive navigation bar
+│   │   │   └── Navbar.tsx      # Responsive nav with admin link for admin users
 │   │   ├── product/           # Product-specific components
 │   │   │   ├── ProductCard.tsx # Product card with wishlist/cart actions
 │   │   │   └── ProductGrid.tsx # Responsive product grid
@@ -282,17 +283,17 @@ nexshop/
 │   │   └── WishlistPage.tsx
 │   ├── types/                 # TypeScript type definitions
 │   │   └── index.ts           # All shared interfaces & types
-│   ├── App.tsx                # Route definitions & providers
+│   ├── App.tsx                # Route definitions, providers & ErrorBoundary
 │   ├── index.css              # Global styles & Tailwind layers
-│   └── main.tsx               # App entry point with ErrorBoundary
+│   └── main.tsx               # App entry point
 ├── supabase/
 │   └── migrations/            # SQL migration files (run in order)
-│       ├── 01_create_profiles_table.sql
-│       ├── 02_create_categories_table.sql
-│       ├── 03_create_products_table.sql
-│       ├── 04_create_cart_orders_reviews_wishlists.sql
-│       ├── 05_seed_products.sql
-│       └── 06_fix_rls_recursion.sql
+│       ├── 20260206193406_create_profiles_table.sql
+│       ├── 20260206193543_create_categories_table.sql
+│       ├── 20260206193804_create_products_table.sql
+│       ├── 20260206193831_create_cart_orders_reviews_wishlists.sql
+│       ├── 20260206193922_seed_products.sql
+│       └── 20260207210000_fix_rls_recursion.sql
 ├── .env.example               # Environment variable template
 ├── .gitignore
 ├── CONTRIBUTING.md            # Contribution guidelines
@@ -322,7 +323,7 @@ nexshop/
 │  ┌──────────┐  ┌──────────┐  ┌──────────────────────┐  │
 │  │  Custom   │  │    UI    │  │   Tailwind CSS       │  │
 │  │  Hooks   │  │Components│  │   Custom Design      │  │
-│  │          │  │          │  │   Tokens & Animations │  │
+│  │          │  │ Recharts │  │   Tokens & Animations │  │
 │  └──────────┘  └──────────┘  └──────────────────────┘  │
 ├─────────────────────────────────────────────────────────┤
 │  Supabase Client SDK                                    │
